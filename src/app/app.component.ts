@@ -6,10 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  selectedSection: string = 'recipes';
-
-  onClickSection(section: string) {
-    this.selectedSection = section;
-  }
 
 }
