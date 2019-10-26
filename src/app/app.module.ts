@@ -11,7 +11,7 @@ import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, SharedModule, CoreModule, AuthModule],
+  imports: [BrowserModule.withServerTransition({ appId: 'serverApp' }), HttpClientModule, AppRoutingModule, SharedModule, CoreModule, AuthModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
