@@ -1,7 +1,17 @@
 import { RecipeService } from './../recipe.service';
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  OnDestroy
+} from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
+import * as RecipesActions from '../store/recipes.actions';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,13 +22,15 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   // @Output() recipeWasSelected = new EventEmitter<Recipe>();
   recipes: Recipe[];
   recipeListSub: Subscription;
-  constructor(private recipeService: RecipeService) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
-    this.recipes = this.recipeService.getRecipes();
-    this.recipeListSub = this.recipeService.recipesChanged.subscribe((recipesList: Recipe[]) => {
-      this.recipes = recipesList;
-    });
+    this.recipeListSub = this.store
+      .select('recipes')
+      .pipe(map(recipesState => recipesState.recipes))
+      .subscribe((recipesList: Recipe[]) => {
+        this.recipes = recipesList;
+      });
   }
 
   ngOnDestroy() {
